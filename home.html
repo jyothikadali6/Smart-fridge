@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Fridge</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        body {
+            background-image: url(img2.jpg);
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Your Smart Fridge Items</h1>
+
+    <!-- Form to Add Items -->
+    <div>
+        <input type="text" id="item-name" placeholder="Item Name" required>
+        <input type="number" id="quantity" placeholder="Quantity" required>
+        <input type="date" id="expiry-date" required>
+        <button onclick="addItem()">Add Item</button>
+    </div>
+
+    <!-- Items Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Expiry Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="items-table"></tbody>
+    </table>
+
+    <script>
+        // ✅ Add Item to Smart Fridge
+        async function addItem() {
+            const name = document.getElementById("item-name").value;
+            const quantity = document.getElementById("quantity").value;
+            const expiry = document.getElementById("expiry-date").value;
+            const userEmail = localStorage.getItem("userEmail"); // Get logged-in user email
+
+            if (!name || !quantity || !expiry) {
+                alert("⚠ Please fill in all fields!");
+                return;
+            }
+
+            const response = await fetch("http://localhost:5000/add-item", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, quantity, expiry, userEmail })
+            });
+
+            if (response.ok) {
+                alert("✅ Item added successfully!");
+                document.getElementById("item-name").value = "";
+                document.getElementById("quantity").value = "";
+                document.getElementById("expiry-date").value = "";
+                loadItems(); // Reload the items table
+            } else {
+                alert("❌ Failed to add item.");
+            }
+        }
+
+        // ✅ Load Items for Logged-in User
+        async function loadItems() {
+            const userEmail = localStorage.getItem("userEmail");
+            if (!userEmail) {
+                alert("⚠ No user logged in!");
+                return;
+            }
+
+            const response = await fetch("http://localhost:5000/get-items?email=" + encodeURIComponent(userEmail));
+            const items = await response.json();
+
+            const tableBody = document.getElementById("items-table");
+            tableBody.innerHTML = "";
+
+            items.forEach(item => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>${item.quantity}</td>
+                    <td>${new Date(item.expiry).toLocaleDateString()}</td>
+                    <td>
+                        <button onclick="notifyUser('${item.name}', '${item.expiry}')">Notify</button>
+                        <button onclick="deleteItem('${item._id}')">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // ✅ Send Notification Email for Expiry
+        async function notifyUser(itemName, expiryDate) {
+            const userEmail = localStorage.getItem("userEmail");
+
+            const response = await fetch("http://localhost:5000/notify", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: userEmail, item: { name: itemName, expiry: expiryDate } })
+            });
+
+            if (response.ok) {
+                alert("✅ Notification sent successfully!");
+            } else {
+                alert("❌ Failed to send notification.");
+            }
+        }
+
+        // ✅ Delete Expired Item
+        async function deleteItem(itemId) {
+            const response = await fetch(`http://localhost:5000/delete-item/${itemId}`, {
+                method: "DELETE"
+            });
+
+            if (response.ok) {
+                alert("🗑 Item deleted successfully!");
+                loadItems();
+            } else {
+                alert("❌ Failed to delete item.");
+            }
+        }
+
+        // ✅ Load items when the page loads
+        window.onload = loadItems;
+    </script>
+</body>
+</html>

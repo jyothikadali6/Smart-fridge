@@ -1,0 +1,145 @@
+/* body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 20px;
+}
+
+.container {
+    max-width: 300px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+}
+
+table {
+    width: 80%;
+    margin: auto;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+} */
+/* body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+}
+
+button {
+    cursor: pointer;
+    padding: 5px 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: darkred;
+}
+
+input {
+    padding: 8px;
+    margin: 5px;
+} */
+
+
+
+
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    background: url('https://source.unsplash.com/1600x900/?kitchen,fridge') no-repeat center center/cover;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+h1 {
+    color: #fff;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Form Styling */
+div {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+}
+
+input, button {
+    margin: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+input {
+    width: 200px;
+    border: 1px solid #ccc;
+}
+
+button {
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Table Styling */
+table {
+    width: 80%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+thead {
+    background: #007BFF;
+    color: white;
+}
+
+th, td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+    background: rgba(0, 123, 255, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 20px;
+    }
+
+    table {
+        width: 100%;
+    }
+}
